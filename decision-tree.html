@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Health Pricing Decision Tree</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .decision-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .node {
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem;
+            text-align: center;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 300px;
+        }
+        .start-node {
+            background-color: #ebf8ff;
+            border-color: #4299e1;
+        }
+        .decision-node {
+            background-color: #e6fffa;
+            border-color: #38b2ac;
+        }
+        .strategy-node {
+            background-color: #fffaf0;
+            border-color: #ed8936;
+        }
+        .evaluation-node {
+            background-color: #f0fff4;
+            border-color: #48bb78;
+        }
+        .final-node {
+            background-color: #fef5ff;
+            border-color: #9f7aea;
+            max-width: 400px;
+        }
+        .connector {
+            width: 2px;
+            background-color: #4a5568;
+            height: 20px;
+            margin: 0 auto;
+        }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #4a5568;
+            margin: 0 auto 10px;
+        }
+        .path-label {
+            font-weight: 500;
+            color: #4a5568;
+            margin: 5px 0;
+        }
+        .paths-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 32%;
+        }
+        .path-header {
+            background-color: #e2e8f0;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .evaluation-section {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1000px;
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: #f7fafc;
+        }
+        .evaluation-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .final-checks {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1000px;
+            border: 2px solid #9f7aea;
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: #fef5ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .final-checks-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .final-checks-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        .all-paths-arrow {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .all-paths-arrow::before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 25px solid #4a5568;
+        }
+        .all-paths-label {
+            text-align: center;
+            font-weight: 600;
+            margin: 10px 0;
+            font-style: italic;
+            color: #4a5568;
+        }
+        .final-arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .paths-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .path {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+            .evaluation-grid, .final-checks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decision-tree">
+            <h1 class="text-2xl font-semibold text-center mb-2">Digital Health Pricing Decision Tree</h1>
+            <p class="text-gray-600 text-center mb-6">Use this tree to help guide your thinking about setting a price for your product or service. Start at the top!</p>
+
+            <!-- Start Node -->
+            <div class="node start-node">
+                <p class="font-semibold">What is the PRIMARY driver for your pricing decision?</p>
+                <p class="text-sm text-gray-600">(Choose the MOST influential factor to start)</p>
+            </div>
+            
+            <div class="connector"></div>
+            <div class="arrow"></div>
+            
+            <!-- Three Main Paths -->
+            <div class="paths-container">
+                <!-- Costs Path -->
+                <div class="path">
+                    <div class="path-header">Costs</div>
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Calculate your Total Costs</p>
+                        <p class="text-sm text-gray-600">(Fixed + Variable) per unit/user/period</p>
+                    </div>
+                    
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Add a desired Profit Margin</p>
+                    </div>
+                    
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node strategy-node">
+                        <p class="font-semibold">Initial Price = Cost + Margin</p>
+                        <p class="text-sm text-gray-600">(Strategy: Cost-Plus)</p>
+                    </div>
+                </div>
+                
+                <!-- Value Path -->
+                <div class="path">
+                    <div class="path-header">Value Delivered</div>
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Define the Unique Value</p>
+                        <p class="text-sm text-gray-600">your solution provides to the user/payer</p>
+                    </div>
+                    
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node decision-node">
+                        <p class="font-semibold">Is the value...</p>
+                    </div>
+                    
+                    <div style="display: flex; width: 100%; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 48%;">
+                            <div class="path-label">High & Easily Quantifiable</div>
+                            <div class="connector"></div>
+                            <div class="arrow"></div>
+                            <div class="node strategy-node">
+                                <p class="font-semibold">Consider Value-Based Pricing</p>
+                                <p class="text-sm text-gray-600">Set price based on perceived/proven value</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 48%;">
+                            <div class="path-label">Moderate or Hard to Quantify</div>
+                            <div class="connector"></div>
+                            <div class="arrow"></div>
+                            <div class="node strategy-node">
+                                <p class="font-semibold">Focus on clear communication of benefits</p>
+                                <p class="text-sm text-gray-600">May need to blend with other strategies</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Competition Path -->
+                <div class="path">
+                    <div class="path-header">Competition</div>
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Identify your Key Competitors</p>
+                        <p class="text-sm text-gray-600">and analyze their pricing & offerings</p>
+                    </div>
+                    
+                    <div class="connector"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node decision-node">
+                        <p class="font-semibold">How will you position against competitors?</p>
+                    </div>
+                    
+                    <div style="display: flex; width: 100%; justify-content: space-between; flex-wrap: wrap;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
+                            <div class="path-label">Price Lower</div>
+                            <div class="connector"></div>
+                            <div class="arrow"></div>
+                            <div class="node strategy-node" style="font-size: 0.9rem;">
+                                <p class="font-semibold">Strategy: Penetration Pricing</p>
+                                <p class="text-sm text-gray-600">(gain market share)</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
+                            <div class="path-label">Price Similar</div>
+                            <div class="connector"></div>
+                            <div class="arrow"></div>
+                            <div class="node strategy-node" style="font-size: 0.9rem;">
+                                <p class="font-semibold">Strategy: Competitive Parity</p>
+                                <p class="text-sm text-gray-600">Differentiate on features</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 30%;">
+                            <div class="path-label">Price Higher</div>
+                            <div class="connector"></div>
+                            <div class="arrow"></div>
+                            <div class="node strategy-node" style="font-size: 0.9rem;">
+                                <p class="font-semibold">Strategy: Premium Pricing</p>
+                                <p class="text-sm text-gray-600">Justify with superior value</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- All Paths Continue Here -->
+            <div class="all-paths-label">All paths continue to evaluation</div>
+            <div class="all-paths-arrow"></div>
+            
+            <!-- Evaluation Section -->
+            <div class="evaluation-section">
+                <p class="evaluation-title">EVALUATION - Compare your initial pricing strategy against these factors</p>
+                
+                <div class="evaluation-grid">
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Is this price point significantly different from competitors?</p>
+                        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+                            <div>
+                                <div class="path-label">Yes</div>
+                                <div class="connector" style="height: 10px;"></div>
+                            </div>
+                            <div>
+                                <div class="path-label">No</div>
+                                <div class="connector" style="height: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Does this price align with market expectations & perceived value?</p>
+                        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+                            <div>
+                                <div class="path-label">Yes</div>
+                                <div class="connector" style="height: 10px;"></div>
+                            </div>
+                            <div>
+                                <div class="path-label">No</div>
+                                <div class="connector" style="height: 10px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Re-evaluate:</p>
+                        <p class="text-sm text-gray-600">Can costs be reduced? Is value perception low? Need to adjust margin?</p>
+                    </div>
+                    
+                    <div class="node">
+                        <p class="font-semibold">Re-evaluate:</p>
+                        <p class="text-sm text-gray-600">Can you better justify value? Do costs allow adjustment?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final Checks Section -->
+            <div class="final-checks">
+                <p class="final-checks-title">FINAL CHECKS - Apply to ALL paths</p>
+                
+                <div class="final-checks-grid">
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Are costs reliably covered at this price point & projected volume?</p>
+                        <p class="text-sm text-gray-600">(If No, Re-evaluate!)</p>
+                    </div>
+                    
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Does the Target Audience perceive this price as fair/acceptable?</p>
+                    </div>
+                    
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Are there Regulatory or Insurance Reimbursement limits?</p>
+                    </div>
+                    
+                    <div class="node evaluation-node">
+                        <p class="font-semibold">Does the price align with your overall Business Goals?</p>
+                    </div>
+                </div>
+                
+                <!-- Centered arrow and final box -->
+                <div class="final-arrow-container">
+                    <div class="connector" style="height: 30px;"></div>
+                    <div class="arrow"></div>
+                    
+                    <div class="node final-node">
+                        <p class="font-semibold">Refine Your Price based on Final Checks</p>
+                        <p class="text-sm text-gray-600">(Pricing is often iterative! Be prepared to test and adjust based on market feedback.)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
